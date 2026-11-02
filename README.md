@@ -236,9 +236,6 @@ KURIO-Marketplace-NFT/
 │
 ├── src/
 │   │
-│   ├── assets/
-│   │   └── Recursos visuais auxiliares
-│   │
 │   ├── components/
 │   │   ├── Navbar
 │   │   ├── Footer
