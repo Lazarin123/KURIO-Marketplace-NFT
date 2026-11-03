@@ -1,4 +1,6 @@
-﻿export const NFT_DATA = [
+﻿import { NFT, UpcomingDrop, StatRanking } from "../types/nft";
+
+export const NFT_DATA: NFT[] = [
   { 
     id: 1, 
     title: "Emerald Ape #042", 
@@ -83,7 +85,7 @@
   }
 ];
 
-export const UPCOMING_DROPS = [
+export const UPCOMING_DROPS: UpcomingDrop[] = [
   {
     id: 101,
     title: "Cybernetic Apes Genesis",
@@ -106,7 +108,7 @@ export const UPCOMING_DROPS = [
   }
 ];
 
-export const STATS_RANKING = [
+export const STATS_RANKING: StatRanking[] = [
   { rank: 1, collection: "Apes Editions", volume: "2,450 ETH", floor: "1.19 ETH", owners: "1,420", items: "10k" },
   { rank: 2, collection: "Wanderers", volume: "1,240 ETH", floor: "1.39 ETH", owners: "850", items: "5k" },
   { rank: 3, collection: "Kurio Nobles", volume: "890 ETH", floor: "1.79 ETH", owners: "420", items: "1k" },

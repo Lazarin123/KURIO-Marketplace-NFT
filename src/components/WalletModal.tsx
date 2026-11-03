@@ -1,9 +1,14 @@
 ﻿import React, { useState } from "react";
-import { X, Lock, Eye, EyeOff } from "lucide-react";
+import { X, Eye, EyeOff } from "lucide-react";
 
-export default function WalletModal({ isOpen, onClose }) {
-  const [tab, setTab] = useState("entrar");
-  const [showPassword, setShowPassword] = useState(false);
+interface WalletModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
+  const [tab, setTab] = useState<string>("entrar");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
@@ -44,7 +49,7 @@ export default function WalletModal({ isOpen, onClose }) {
         {tab === "entrar" ? (
           <form
             className="space-y-4"
-            onSubmit={(e) => {
+            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
               e.preventDefault();
               onClose();
             }}
@@ -56,14 +61,14 @@ export default function WalletModal({ isOpen, onClose }) {
               <input
                 type="email"
                 placeholder="contato@email.com"
-                className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-[#D98E32]"
+                className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-[#D98E32] text-[#E6D7C3]"
               />
             </div>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="************"
-                className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-[#D98E32]"
+                className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:border-[#D98E32] text-[#E6D7C3]"
               />
               <button
                 type="button"
@@ -92,7 +97,7 @@ export default function WalletModal({ isOpen, onClose }) {
         ) : (
           <form
             className="space-y-3"
-            onSubmit={(e) => {
+            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
               e.preventDefault();
               onClose();
             }}
@@ -104,22 +109,22 @@ export default function WalletModal({ isOpen, onClose }) {
             <input
               type="text"
               placeholder="Nome de usuário"
-              className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32]"
+              className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32] text-[#E6D7C3]"
             />
             <input
               type="email"
               placeholder="Digite seu e-mail"
-              className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32]"
+              className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32] text-[#E6D7C3]"
             />
             <input
               type="password"
               placeholder="Senha"
-              className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32]"
+              className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32] text-[#E6D7C3]"
             />
             <input
               type="password"
               placeholder="Confirmar senha"
-              className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32]"
+              className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32] text-[#E6D7C3]"
             />
             <button className="w-full bg-[#D98E32] hover:bg-[#b87528] text-black font-bold text-xs py-2.5 rounded-lg transition uppercase tracking-wider mt-2">
               Criar perfil

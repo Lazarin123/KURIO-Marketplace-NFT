@@ -1,6 +1,10 @@
 ﻿import React from "react";
 
-export default function BannerHero({ onExplore }) {
+interface BannerHeroProps {
+  onExplore: () => void;
+}
+
+export default function BannerHero({ onExplore }: BannerHeroProps) {
   return (
     <div className="bg-gradient-to-r from-[#1A1310] to-[#14100E] border border-[#261F1A] rounded-2xl p-8 mb-8 flex flex-col md:flex-row items-center justify-between">
       <div className="max-w-xl space-y-4 mb-6 md:mb-0">

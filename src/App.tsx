@@ -9,6 +9,7 @@ import AgendaView from "./components/AgendaView";
 import StatsView from "./components/StatsView";
 import NftCard from "./components/NftCard";
 import { NFT_DATA } from "./data/nfts";
+import { NFT } from "./types/nft";
 import {
   User,
   Wallet,
@@ -21,66 +22,73 @@ import {
   Eye,
   EyeOff,
   CheckCircle2,
-  ArrowRight,
   Star,
   Minus,
   Plus,
   Share2,
-  UserCircle,
 } from "lucide-react";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("inicio");
-  const [marketSubTab, setMarketSubTab] = useState("todos");
-  const [profileSubTab, setProfileSubTab] = useState("dados");
-  const [cart, setCart] = useState([NFT_DATA[0]]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
-  const [priceRange, setPriceRange] = useState(5.0);
-  const [selectedNft, setSelectedNft] = useState(null);
+  const [activeTab, setActiveTab] = useState<string>("inicio");
+  const [marketSubTab, setMarketSubTab] = useState<string>("todos");
+  const [profileSubTab, setProfileSubTab] = useState<string>("dados");
+  
+  // Estado da Barra de Pesquisa global
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const [cart, setCart] = useState<NFT[]>([NFT_DATA[0]]);
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+  const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
+  const [priceRange, setPriceRange] = useState<number>(5.0);
+  const [selectedNft, setSelectedNft] = useState<NFT | null>(null);
 
   // Visibilidade de senhas na aba Perfil
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isOrderPlaced, setIsOrderPlaced] = useState(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isOrderPlaced, setIsOrderPlaced] = useState<boolean>(false);
 
   // Estados específicos da tela de Detalhes
-  const [detailTab, setDetailTab] = useState("detalhes");
-  const [nftQuantity, setNftQuantity] = useState(1);
-  const [selectedEdition, setSelectedEdition] = useState("1/50");
+  const [detailTab, setDetailTab] = useState<string>("detalhes");
+  const [nftQuantity, setNftQuantity] = useState<number>(1);
+  const [selectedEdition, setSelectedEdition] = useState<string>("1/50");
 
   const itemsPerPage = 6;
 
-  const filteredNfts = NFT_DATA.filter((nft) => {
+  const filteredNfts = NFT_DATA.filter((nft: NFT) => {
     const matchCategory =
       selectedCategory === "Todos" || nft.collection === selectedCategory;
-    const matchPrice = nft.price <= parseFloat(priceRange);
+    const matchPrice = nft.price <= priceRange;
+    
+    // Filtro por texto digitado na pesquisa (nome ou coleção)
+    const matchSearch = 
+      nft.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      nft.collection.toLowerCase().includes(searchQuery.toLowerCase());
 
     let matchSubTab = true;
     if (marketSubTab === "lancamentos") matchSubTab = nft.tag === "lancamento";
     if (marketSubTab === "alta") matchSubTab = nft.tag === "alta";
 
-    return matchCategory && matchPrice && matchSubTab;
+    return matchCategory && matchPrice && matchSubTab && matchSearch;
   });
 
   const totalPages = Math.ceil(filteredNfts.length / itemsPerPage) || 1;
   const paginatedNfts = filteredNfts.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
-  const handleAddToCart = (nft) => {
+  const handleAddToCart = (nft: NFT) => {
     if (!cart.some((item) => item.id === nft.id)) {
       setCart([...cart, nft]);
     }
     setIsCartOpen(true);
   };
 
-  const handleNavClick = (tab) => {
+  const handleNavClick = (tab: string) => {
     setSelectedNft(null);
     if (tab === "mercado") {
       setActiveTab("inicio");
@@ -105,6 +113,8 @@ export default function App() {
         onOpenCart={() => setIsCartOpen(true)}
         onOpenWallet={() => setIsAuthOpen(true)}
         onOpenAuth={() => setIsAuthOpen(true)}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto p-6">
@@ -187,7 +197,7 @@ export default function App() {
                       </button>
                     </div>
                     <span className="text-[10px] text-[#E6D7C3]/50">
-                      Ordenar por: Listados recentemente
+                      Encontrados: {filteredNfts.length}
                     </span>
                   </div>
 
@@ -411,7 +421,7 @@ export default function App() {
         {activeTab === "estatisticas" && <StatsView />}
         {activeTab === "agenda" && <AgendaView />}
 
-        {/* PERFIL DO COLECIONADOR (EXATAMENTE COMO NO FIGMA) */}
+        {/* PERFIL DO COLECIONADOR */}
         {activeTab === "perfil" && !selectedNft && (
           <div className="flex flex-col md:flex-row gap-8 py-4">
             {/* MENU LATERAL */}
@@ -480,7 +490,6 @@ export default function App() {
 
             {/* CONTEÚDO DAS ABAS DE PERFIL E CARTEIRAS */}
             <div className="flex-1 bg-[#14100E] border border-[#261F1A] rounded-xl p-8">
-              {/* ABA 1: DADOS DO PERFIL (IDÊNTICO AO FIGMA) */}
               {profileSubTab === "dados" && (
                 <div className="space-y-6 max-w-4xl text-xs">
                   <h3 className="text-sm font-bold text-[#E6D7C3] uppercase tracking-wider mb-4">
@@ -649,7 +658,6 @@ export default function App() {
                 </div>
               )}
 
-              {/* ABA 2: CARTEIRAS (IDÊNTICO AO FIGMA) */}
               {profileSubTab === "carteiras" && (
                 <div className="space-y-6 max-w-4xl text-xs">
                   <div className="flex justify-between items-center mb-4">
@@ -758,34 +766,6 @@ export default function App() {
                         placeholder="KURIO-2026"
                         className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg p-3 text-[#E6D7C3]"
                       />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block mb-2 text-[#E6D7C3]/80">
-                        E-mail*
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="samuel@teste.com"
-                        className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg p-3 text-[#E6D7C3]"
-                      />
-                    </div>
-                    <div>
-                      <label className="block mb-2 text-[#E6D7C3]/80">
-                        Nome ENS*
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="samuel.eth"
-                          className="w-full bg-[#1B1512] border border-[#261F1A] rounded-lg p-3 text-[#E6D7C3] pr-16"
-                        />
-                        <span className="absolute right-3 top-3 text-[10px] text-[#E6D7C3]/50 font-bold">
-                          .eth ▾
-                        </span>
-                      </div>
                     </div>
                   </div>
 
@@ -910,7 +890,7 @@ export default function App() {
                   <input
                     type="text"
                     placeholder="E-mail"
-                    className="w-full bg-[#1B1512] border border-[#261F1A] p-2.5 rounded"
+                    className="w-full bg-[#1B1512] border border-[#261F1A] p-2.5 rounded text-[#E6D7C3]"
                   />
                   <button
                     onClick={() => setIsOrderPlaced(true)}

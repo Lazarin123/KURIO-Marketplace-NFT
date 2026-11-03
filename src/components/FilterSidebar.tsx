@@ -1,15 +1,23 @@
 ﻿import React from "react";
 import { Sliders } from "lucide-react";
 
+interface FilterSidebarProps {
+  selectedCategory: string;
+  setSelectedCategory: (cat: string) => void;
+  priceRange: number;
+  setPriceRange: (price: number) => void;
+}
+
 export default function FilterSidebar({
   selectedCategory,
   setSelectedCategory,
   priceRange,
   setPriceRange,
-}) {
-  const categories = [
+}: FilterSidebarProps) {
+  const categories: string[] = [
     "Todos",
     "Kurio Editions",
+    "Apes Editions",
     "Wanderers",
     "Kurio Nobles",
     "Soundwaves",
@@ -53,7 +61,9 @@ export default function FilterSidebar({
           max="5.0"
           step="0.1"
           value={priceRange}
-          onChange={(e) => setPriceRange(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPriceRange(parseFloat(e.target.value))
+          }
           className="w-full accent-[#D98E32] bg-[#261F1A]"
         />
         <div className="flex justify-between text-[10px] text-[#E6D7C3]/50 mt-2">

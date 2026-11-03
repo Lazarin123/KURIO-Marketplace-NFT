@@ -1,7 +1,14 @@
 ﻿import React from "react";
 import { ShoppingCart, Eye } from "lucide-react";
+import { NFT } from "../types/nft";
 
-export default function NftCard({ nft, onSelect, onAddToCart }) {
+interface NftCardProps {
+  nft: NFT;
+  onSelect: (nft: NFT) => void;
+  onAddToCart: (nft: NFT) => void;
+}
+
+export default function NftCard({ nft, onSelect, onAddToCart }: NftCardProps) {
   return (
     <div className="bg-[#14100E] border border-[#261F1A] rounded-xl overflow-hidden hover:border-[#D98E32] transition group">
       <div className="relative cursor-pointer" onClick={() => onSelect(nft)}>
@@ -10,9 +17,11 @@ export default function NftCard({ nft, onSelect, onAddToCart }) {
           alt={nft.title}
           className="w-full h-52 object-cover group-hover:scale-105 transition duration-300"
         />
-        <span className="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-[#D98E32] text-[10px] font-bold px-2.5 py-1 rounded-full border border-[#D98E32]/30">
-          {nft.rarity}
-        </span>
+        {nft.rarity && (
+          <span className="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-[#D98E32] text-[10px] font-bold px-2.5 py-1 rounded-full border border-[#D98E32]/30">
+            {nft.rarity}
+          </span>
+        )}
       </div>
       <div className="p-4 space-y-2">
         <span className="text-[10px] text-[#D98E32] font-semibold uppercase">

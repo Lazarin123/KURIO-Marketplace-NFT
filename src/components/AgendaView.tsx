@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import { UPCOMING_DROPS } from "../data/nfts";
+import { UpcomingDrop } from "../types/nft";
 
 export default function AgendaView() {
   return (
@@ -12,7 +13,7 @@ export default function AgendaView() {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {UPCOMING_DROPS.map((drop) => (
+        {UPCOMING_DROPS.map((drop: UpcomingDrop) => (
           <div
             key={drop.id}
             className="bg-[#14100E] border border-[#261F1A] rounded-xl overflow-hidden flex flex-col md:flex-row"

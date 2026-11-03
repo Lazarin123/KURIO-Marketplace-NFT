@@ -1,5 +1,14 @@
 ﻿import React, { useState } from "react";
-import { X, Trash2, CheckCircle2 } from "lucide-react";
+import { X, Trash2 } from "lucide-react";
+import { NFT } from "../types/nft";
+
+interface CartDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  cart: NFT[];
+  setCart: React.Dispatch<React.SetStateAction<NFT[]>>;
+  onNavigateCheckout: () => void;
+}
 
 export default function CartDrawer({
   isOpen,
@@ -7,13 +16,13 @@ export default function CartDrawer({
   cart,
   setCart,
   onNavigateCheckout,
-}) {
-  const [discount, setDiscount] = useState(0);
-  const [coupon, setCoupon] = useState("");
+}: CartDrawerProps) {
+  const [discount, setDiscount] = useState<number>(0);
+  const [coupon, setCoupon] = useState<string>("");
 
   if (!isOpen) return null;
 
-  const handleRemove = (id) => {
+  const handleRemove = (id: number) => {
     setCart(cart.filter((item) => item.id !== id));
   };
 
@@ -86,8 +95,8 @@ export default function CartDrawer({
                 type="text"
                 placeholder="Código promocional..."
                 value={coupon}
-                onChange={(e) => setCoupon(e.target.value)}
-                className="flex-1 bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32]"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCoupon(e.target.value)}
+                className="flex-1 bg-[#1B1512] border border-[#261F1A] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#D98E32] text-[#E6D7C3]"
               />
               <button
                 onClick={handleApplyCoupon}

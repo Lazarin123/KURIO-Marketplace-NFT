@@ -1,14 +1,26 @@
 ﻿import React from "react";
 import { ShoppingCart, Search, Wallet, User } from "lucide-react";
 
+interface NavbarProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  cartCount: number;
+  onOpenCart: () => void;
+  onOpenWallet: () => void;
+  onOpenAuth: () => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
 export default function Navbar({
   activeTab,
   setActiveTab,
   cartCount,
   onOpenCart,
-  onOpenWallet,
   onOpenAuth,
-}) {
+  searchQuery,
+  setSearchQuery,
+}: NavbarProps) {
   return (
     <header className="border-b border-[#261F1A] bg-[#0D0B0A] sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
       <div className="flex items-center space-x-8">
@@ -47,12 +59,18 @@ export default function Navbar({
       </div>
 
       <div className="flex items-center space-x-4">
+        {/* BARRA DE PESQUISA NA NAVBAR */}
         <div className="relative hidden lg:block">
           <Search className="w-4 h-4 absolute left-3 top-2.5 text-[#E6D7C3]/40" />
           <input
             type="text"
             placeholder="Buscar coleções, NFTs..."
-            className="bg-[#14100E] border border-[#261F1A] rounded-md pl-9 pr-4 py-1.5 text-xs focus:outline-none focus:border-[#D98E32] w-64"
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              if (activeTab !== "inicio") setActiveTab("inicio");
+            }}
+            className="bg-[#14100E] border border-[#261F1A] rounded-md pl-9 pr-4 py-1.5 text-xs focus:outline-none focus:border-[#D98E32] w-64 text-[#E6D7C3]"
           />
         </div>
 
